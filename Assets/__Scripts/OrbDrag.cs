@@ -7,6 +7,7 @@ public class Orb : MonoBehaviour
     private Vector3 offset;
     private Camera mainCamera;
     private Rigidbody2D rb;
+    public LineManager lineManager; // Reference to LineManager
 
     void Start()
     {
@@ -42,6 +43,22 @@ public class Orb : MonoBehaviour
             transform.position = Vector3.Lerp(transform.position, mousePos + offset, Time.deltaTime * 15);
 
             Debug.Log("🚀 Updated Orb Position: " + transform.position);
+        }
+    }
+
+    void OnMouseUp()
+    {
+        isDragging = false;
+        rb.isKinematic = false; // Restore physics behavior
+        Debug.Log("🛑 Orb Released!");
+
+        if (lineManager != null)
+        {
+            lineManager.AddPoint(transform.position);
+        }
+        else
+        {
+            Debug.LogWarning("⚠️ No LineManager assigned to Orb!");
         }
     }
 }
